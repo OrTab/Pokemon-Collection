@@ -1,16 +1,11 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { Pokemon, PokemonState } from "./types";
+import { fetchAllPokemons } from "../../controllers/pokemonController";
 
+// Async thunk that calls the controller
 export const fetchPokemons = createAsyncThunk(
   "pokemon/fetchPokemons",
-  async (): Promise<Pokemon[]> => {
-    const response = await fetch("http://localhost:3000/api/pokemons");
-    if (!response.ok) {
-      throw new Error("Failed to fetch pokemons");
-    }
-    const data = await response.json();
-    return data;
-  }
+  fetchAllPokemons
 );
 
 const initialState: PokemonState = {
