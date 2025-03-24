@@ -7,6 +7,7 @@ import {
   PokemonSpecies,
 } from "../types/types";
 import { extractEvolutionName, getAllSettledValues } from "../utils";
+import Favorite from "../models/Favorite";
 
 export const fetchPokemons = async ({
   offset,
@@ -77,4 +78,18 @@ const fetchPokemonEvolution = async (url: string) => {
   const evolutionChainData = evolutionChainResponse.data;
   // extract the evolution name recursively
   return extractEvolutionName(evolutionChainData.chain);
+};
+
+export const addFavorite = async (pokemonId: string) => {
+  return Favorite.create({
+    pokemonId,
+  });
+};
+
+export const getFavorites = async () => {
+  return Favorite.find();
+};
+
+export const deleteFavorite = async (id: string) => {
+  return Favorite.findByIdAndDelete(id);
 };

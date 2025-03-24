@@ -8,3 +8,9 @@ export interface Pokemon {
   evolution: string[];
   id: number;
 }
+
+export interface Favorite {
+  _id: string;
+  pokemonId: number;
+  createdAt: Date;
+}
