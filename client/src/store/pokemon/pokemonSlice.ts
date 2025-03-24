@@ -2,22 +2,34 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { PokemonState } from "./types";
 import { fetchAllPokemons } from "../../controllers/pokemonController";
 import { Pokemon } from "../../../../shared/types";
+import { createListenerMiddleware } from "@reduxjs/toolkit";
+import { RootState } from "../index";
 
 export const fetchPokemons = createAsyncThunk(
   "pokemon/fetchPokemons",
-  fetchAllPokemons
+  (_, { getState }) => {
+    const state = getState() as RootState;
+    const currentPage = state.pokemon.currentPage;
+    return fetchAllPokemons({ page: currentPage });
+  }
 );
 
 const initialState: PokemonState = {
   pokemons: [],
   loading: false,
   error: null,
+  currentPage: 1,
+  hasMoreToFetch: true,
 };
 
 const pokemonSlice = createSlice({
   name: "pokemon",
   initialState,
-  reducers: {},
+  reducers: {
+    setCurrentPage: (state) => {
+      state.currentPage = state.currentPage + 1;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchPokemons.pending, (state) => {
@@ -28,7 +40,8 @@ const pokemonSlice = createSlice({
         fetchPokemons.fulfilled,
         (state, action: PayloadAction<Pokemon[]>) => {
           state.loading = false;
-          state.pokemons = action.payload;
+          state.pokemons = [...state.pokemons, ...action.payload];
+          state.hasMoreToFetch = action.payload.length > 0;
         }
       )
       .addCase(fetchPokemons.rejected, (state, action) => {
@@ -38,4 +51,21 @@ const pokemonSlice = createSlice({
   },
 });
 
+// Actions
+
+export const { setCurrentPage } = pokemonSlice.actions;
+
+// Reducer
+
 export default pokemonSlice.reducer;
+
+// Listeners
+
+export const pageListenerMiddleware = createListenerMiddleware();
+
+pageListenerMiddleware.startListening({
+  actionCreator: setCurrentPage,
+  effect: async (_, listenerApi) => {
+    await listenerApi.dispatch(fetchPokemons());
+  },
+});

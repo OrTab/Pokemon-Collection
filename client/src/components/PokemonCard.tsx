@@ -1,17 +1,39 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Pokemon } from "../../../shared/types";
 import { Box, Heading, Badge, Image } from "@chakra-ui/react";
 import { checkIsImageUrl } from "../utils";
 import styled from "styled-components";
+import { useIntersectionObserver } from "../hooks/useIntersactionObserver";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../store";
+import { setCurrentPage } from "../store/pokemon/pokemonSlice";
 
 type PokemonCard = {
   pokemon: Pokemon;
+  isLastCard: boolean;
 };
 
 const SPRITES_INTERVAL = 1000;
 
-export const PokemonCard = ({ pokemon: { sprites, name } }: PokemonCard) => {
+export const PokemonCard = ({
+  pokemon: { sprites, name },
+  isLastCard,
+}: PokemonCard) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { hasMoreToFetch } = useSelector((state: RootState) => state.pokemon);
   const [currentSpriteIndex, setCurrentSpriteIndex] = useState(0);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const updatePagination = useCallback(() => {
+    dispatch(setCurrentPage());
+  }, [dispatch]);
+
+  useIntersectionObserver({
+    cb: updatePagination,
+    element: cardRef.current,
+    shouldBeObserved: isLastCard,
+    hasMore: hasMoreToFetch,
+  });
 
   const spritesValues: string[] = useMemo(
     () => Object.values(sprites).filter(checkIsImageUrl),
@@ -31,6 +53,7 @@ export const PokemonCard = ({ pokemon: { sprites, name } }: PokemonCard) => {
 
   return (
     <Box
+      ref={cardRef}
       key={name}
       height='300px'
       borderRadius='lg'
