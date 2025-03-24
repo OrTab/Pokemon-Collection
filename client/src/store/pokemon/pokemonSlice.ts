@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { Pokemon, PokemonState } from "./types";
+import { PokemonState } from "./types";
 import { fetchAllPokemons } from "../../controllers/pokemonController";
+import { Pokemon } from "../../../../shared/types";
 
-// Async thunk that calls the controller
 export const fetchPokemons = createAsyncThunk(
   "pokemon/fetchPokemons",
   fetchAllPokemons

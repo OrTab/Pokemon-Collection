@@ -1,5 +1,5 @@
+import { Pokemon } from "../../../shared/types";
 import { getAllPokemons as getPokemonsService } from "../services/pokemonService";
-import { Pokemon } from "../store/pokemon/types";
 
 export const fetchAllPokemons = async (): Promise<Pokemon[]> => {
   try {
