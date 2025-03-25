@@ -28,7 +28,9 @@ export const PokemonDetails = ({ pokemon, onClose }: PokemonDetailsProps) => {
               <Box width={{ base: "100%", md: "60%" }}>
                 <Section title='Types' data={pokemon.types} />
                 <Section title='Abilities' data={pokemon.abilities} />
-                <Section title='Evolutions' data={pokemon.evolutions} />
+                {!!pokemon.evolutions.length && (
+                  <Section title='Evolutions' data={pokemon.evolutions} />
+                )}
               </Box>
             </Flex>
           </Dialog.Body>

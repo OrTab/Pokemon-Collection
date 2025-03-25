@@ -20,6 +20,8 @@ type PokemonCard = {
   isLastCard: boolean;
 };
 
+export const CARD_HEIGHT = 300;
+
 export const PokemonCard = ({ pokemon, isLastCard }: PokemonCard) => {
   const dispatch = useDispatch<AppDispatch>();
   const hasMoreToFetch = useSelector(selectPokemonHasMoreToFetch);
@@ -52,7 +54,7 @@ export const PokemonCard = ({ pokemon, isLastCard }: PokemonCard) => {
         cursor='pointer'
         ref={cardRef}
         key={name}
-        height='300px'
+        height={CARD_HEIGHT}
         borderRadius='lg'
         boxShadow='md'
         _hover={{
