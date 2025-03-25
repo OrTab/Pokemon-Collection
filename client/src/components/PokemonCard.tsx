@@ -67,7 +67,7 @@ export const PokemonCard = ({
         dispatch(addFavorite(id));
       }
     },
-    [isFavorite, dispatch]
+    [isFavorite, dispatch, id]
   );
 
   return (

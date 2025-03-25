@@ -12,5 +12,5 @@ export interface Pokemon {
 export interface Favorite {
   _id: string;
   pokemonId: number;
-  createdAt: Date;
+  createdAt: string;
 }

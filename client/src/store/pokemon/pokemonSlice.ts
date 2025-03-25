@@ -22,15 +22,34 @@ export const fetchFavorites = createAsyncThunk(
 
 export const addFavorite = createAsyncThunk(
   "pokemon/addFavorite",
-  (pokemonId: number) => {
-    return pokemonController.addFavorite(pokemonId);
+  async (pokemonId: number, { dispatch }) => {
+    dispatch(pokemonSlice.actions.addFavoriteOptimistic(pokemonId));
+    try {
+      return await pokemonController.addFavorite(pokemonId);
+    } catch (error) {
+      dispatch(pokemonSlice.actions.removeFavoriteOptimistic(pokemonId));
+      throw error;
+    }
   }
 );
 
 export const deleteFavorite = createAsyncThunk(
   "pokemon/deleteFavorite",
-  (pokemonId: number) => {
-    return pokemonController.deleteFavorite(pokemonId);
+  async (pokemonId: number, { dispatch, getState }) => {
+    const state = getState() as RootState;
+    const currentFavorite = state.pokemon.favorites[pokemonId];
+
+    dispatch(pokemonSlice.actions.removeFavoriteOptimistic(pokemonId));
+    try {
+      return await pokemonController.deleteFavorite(pokemonId);
+    } catch (error) {
+      if (currentFavorite) {
+        dispatch(
+          pokemonSlice.actions.restoreFavoriteOptimistic(currentFavorite)
+        );
+      }
+      throw error;
+    }
   }
 );
 
@@ -49,6 +68,24 @@ const pokemonSlice = createSlice({
   reducers: {
     setCurrentPage: (state) => {
       state.currentPage = state.currentPage + 1;
+    },
+    addFavoriteOptimistic: (state, action: PayloadAction<number>) => {
+      const pokemonId = action.payload;
+      state.favorites[pokemonId] = {
+        _id: "temp-" + Date.now(), // Temporary ID
+        pokemonId: pokemonId,
+        createdAt: new Date().toISOString(),
+      };
+    },
+    removeFavoriteOptimistic: (state, action: PayloadAction<number>) => {
+      const pokemonId = action.payload;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { [pokemonId]: _, ...rest } = state.favorites;
+      state.favorites = rest;
+    },
+    restoreFavoriteOptimistic: (state, action: PayloadAction<Favorite>) => {
+      const favorite = action.payload;
+      state.favorites[favorite.pokemonId] = favorite;
     },
   },
   extraReducers: (builder) => {
@@ -95,7 +132,12 @@ const pokemonSlice = createSlice({
 
 // Actions
 
-export const { setCurrentPage } = pokemonSlice.actions;
+export const {
+  setCurrentPage,
+  addFavoriteOptimistic,
+  removeFavoriteOptimistic,
+  restoreFavoriteOptimistic,
+} = pokemonSlice.actions;
 
 // Reducer
 
