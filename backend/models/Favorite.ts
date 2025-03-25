@@ -9,6 +9,7 @@ const FavoriteSchema = new Schema(
       type: Number,
       required: true,
       unique: true,
+      index: true,
     },
     createdAt: {
       type: Date,

@@ -1,22 +1,12 @@
 import { Container, Heading, Spinner, Text } from "@chakra-ui/react";
 import { LoadingPokemonsSkeletons } from "../components/LoadingPokemonsSkeletons";
-import { useLoadAppData } from "../hooks/useLoadAppData";
 import { PokemonList } from "../components/PokemonList";
 import { Filters } from "../components/Filters";
 
-import { useSelector } from "react-redux";
-import {
-  selectPokemonError,
-  selectPokemonLoading,
-  selectPokemons,
-} from "../store/pokemon/selectors";
+import { usePokemons } from "../hooks/usePokemons";
 
 export const Pokemons = () => {
-  const pokemons = useSelector(selectPokemons);
-  const loading = useSelector(selectPokemonLoading);
-  const error = useSelector(selectPokemonError);
-
-  useLoadAppData();
+  const { pokemons, loading, error } = usePokemons();
 
   const isInitialLoading = loading && pokemons.length === 0;
 

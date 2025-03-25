@@ -3,29 +3,27 @@ import cors from "cors";
 import router from "./routes";
 import { connectToDatabase } from "./mongodb";
 import { initializeRedis } from "./cache/redis";
+import { CONFIG } from "./config";
 
 const app = express();
-const port = process.env.PORT || 3000;
 
+// CORS configuration
+app.use(cors(CONFIG.cors));
 app.use(express.json());
 
-app.use(
-  cors({
-    origin: "http://localhost:5000",
-  })
-);
-
+// Routes
 app.use("/api", router);
 
 const startServer = async () => {
   try {
     await connectToDatabase();
     await initializeRedis();
-    app.listen(port, () => {
-      console.log(`Server is running at http://localhost:${port}`);
+
+    app.listen(CONFIG.port, () => {
+      console.log(`Server running at http://${CONFIG.host}:${CONFIG.port}`);
     });
   } catch (error) {
-    console.error("Failed to connect to database or redis:", error);
+    console.error("Failed to start server:", error);
     process.exit(1);
   }
 };

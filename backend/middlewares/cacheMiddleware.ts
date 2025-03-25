@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { getCache, setCache } from "../utils/redisUtils";
+import { getCache, setCache } from "../cache/redisUtils";
 
 type CacheMiddlewareOptions = {
   expiration?: number;

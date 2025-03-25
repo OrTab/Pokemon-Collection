@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { pokemonService } from "../services/pokemonService";
-import { getCache, setCache } from "../utils/redisUtils";
-import { Favorite } from "../../shared/types";
+import { getCache, setCache } from "../cache/redisUtils";
 import { IFavorite } from "../models/Favorite";
 import { CACHE_KEYS } from "../cache/constants";
 
