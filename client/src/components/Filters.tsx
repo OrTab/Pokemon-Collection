@@ -25,7 +25,7 @@ export const Filters = () => {
   };
 
   return (
-    <Box p={4} borderWidth='1px' borderRadius='lg' shadow='sm'>
+    <Box p={4} borderWidth='1px' borderRadius='lg' shadow='sm' margin='0 12px'>
       <Flex direction={{ base: "column", md: "row" }} gap={4}>
         <Flex flex={1} alignItems='center' gap={4}>
           <FaSearch color='gray.400' />

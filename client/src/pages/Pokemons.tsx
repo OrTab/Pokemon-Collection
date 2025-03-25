@@ -1,16 +1,8 @@
-import {
-  Container,
-  Heading,
-  Spinner,
-  Text,
-  Button,
-  VStack,
-} from "@chakra-ui/react";
+import { Container, Heading, Text, Button, VStack } from "@chakra-ui/react";
 import { LoadingPokemonsSkeletons } from "../components/LoadingPokemonsSkeletons";
 import { PokemonList } from "../components/PokemonList";
 import { Filters } from "../components/Filters";
 import { IoReload } from "react-icons/io5";
-
 import { usePokemons } from "../hooks/usePokemons";
 
 export const Pokemons = () => {
@@ -38,8 +30,7 @@ export const Pokemons = () => {
         Pokémon Collection
       </Heading>
       <Filters />
-      <PokemonList />
-      {loading && <Spinner size='lg' marginLeft='auto' marginRight='auto' />}
+      <PokemonList shouldShowLoading={loading} />
     </Container>
   );
 };

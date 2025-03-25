@@ -5,13 +5,13 @@ import {
   SimpleGrid,
   Skeleton,
 } from "@chakra-ui/react";
+import { POKEMON_LIST_COLUMNS } from "./PokemonList";
 
 export const LoadingPokemonsSkeletons = () => {
   return (
     <Container
-      padding={12}
       maxW='container.xl'
-      py={8}
+      p={8}
       display='flex'
       flexDirection='column'
       gap={8}
@@ -19,8 +19,8 @@ export const LoadingPokemonsSkeletons = () => {
       <Heading as='h1' textAlign='center' color='blue.600'>
         Loading Pokémon...
       </Heading>
-      <Skeleton height='73px' />
-      <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} gap={8}>
+      <Skeleton height='73px' margin='0 12px' />
+      <SimpleGrid columns={POKEMON_LIST_COLUMNS} gap={8} padding='12px'>
         {[...Array(8)].map((_, index) => (
           <Box key={index} height='300px' borderRadius='lg' boxShadow='md'>
             <Skeleton height='200px' />

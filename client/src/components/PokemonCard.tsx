@@ -18,13 +18,13 @@ import { setCurrentPage } from "../store/pokemon/slice";
 
 type PokemonCard = {
   pokemon: Pokemon;
-  isLastCard: boolean;
+  cardShouldBeObserved: boolean;
 };
 
 export const CARD_HEIGHT = 300;
 
 export const PokemonCard = React.memo(
-  ({ pokemon, isLastCard }: PokemonCard) => {
+  ({ pokemon, cardShouldBeObserved }: PokemonCard) => {
     const dispatch = useDispatch<AppDispatch>();
     const hasMoreToFetch = useSelector(selectPokemonHasMoreToFetch);
     const filters = useSelector(selectPokemonFilters);
@@ -41,7 +41,7 @@ export const PokemonCard = React.memo(
     useIntersectionObserver({
       cb: updatePagination,
       element: cardRef,
-      shouldBeObserved: isLastCard && !isFilterApplied,
+      shouldBeObserved: cardShouldBeObserved && !isFilterApplied,
       hasMore: hasMoreToFetch,
     });
 
