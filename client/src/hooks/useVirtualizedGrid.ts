@@ -1,13 +1,31 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 
 interface UseVirtualizedGridConfig<T> {
+  /**
+   * The height of each item in the grid.
+   */
   itemHeight: number;
+  /**
+   * The number of items per row in the grid.
+   */
   itemsPerRow: number;
+  /**
+   * The height of the container of the grid.
+   */
   containerHeight: number;
+  /**
+   * The number of rows to buffer above and below the visible area.
+   */
   bufferRows?: number;
+  /**
+   * The items to display in the grid.
+   */
   items: T[];
 }
 
+/**
+ * This hook is used to virtualize a grid of items for performance reasons when dealing with a large number of items.
+ */
 export function useVirtualizedGrid<T>({
   itemHeight,
   itemsPerRow,
