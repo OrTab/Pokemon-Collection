@@ -3,11 +3,8 @@ import { useCallback } from "react";
 import { AppDispatch } from "../store";
 import { useDispatch, useSelector } from "react-redux";
 import { FaHeart } from "react-icons/fa";
-import {
-  addFavorite,
-  deleteFavorite,
-  selectPokemonFavorites,
-} from "../store/pokemon/pokemonSlice";
+import { selectPokemonFavorites } from "../store/pokemon/selectors";
+import { addFavorite, deleteFavorite } from "../store/pokemon/thunks";
 
 type FavoriteIconProps = {
   pokemonId: number;

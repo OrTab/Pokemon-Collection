@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { AppDispatch } from "../store";
 import { useDispatch } from "react-redux";
-import { fetchPokemons, fetchFavorites } from "../store/pokemon/pokemonSlice";
+import { fetchFavorites, fetchPokemons } from "../store/pokemon/thunks";
 
 export const useLoadAppData = () => {
   const dispatch = useDispatch<AppDispatch>();

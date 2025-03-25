@@ -1,12 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Box, Input, Flex, Button } from "@chakra-ui/react";
 import { FaSearch } from "react-icons/fa";
-import {
-  selectPokemonFilters,
-  setFilters,
-} from "../store/pokemon/pokemonSlice";
 import { useDebounce } from "../hooks/useDebaounce";
 import { useCallback } from "react";
+import { selectPokemonFilters } from "../store/pokemon/selectors";
+import { setFilters } from "../store/pokemon/slice";
 
 export const Filters = () => {
   const dispatch = useDispatch();

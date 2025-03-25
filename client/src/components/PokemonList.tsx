@@ -1,7 +1,7 @@
 import { SimpleGrid } from "@chakra-ui/react";
 import { PokemonCard } from "../components/PokemonCard";
-import { selectFilteredPokemons } from "../store/pokemon/pokemonSlice";
 import { useSelector } from "react-redux";
+import { selectFilteredPokemons } from "../store/pokemon/selectors";
 
 export const PokemonList = () => {
   const pokemons = useSelector(selectFilteredPokemons);

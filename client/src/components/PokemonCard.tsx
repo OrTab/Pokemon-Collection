@@ -9,7 +9,10 @@ import { AppDispatch } from "../store";
 import { PokemonDetails } from "./PokemonDetails";
 import { FavoriteIcon } from "./FavoriteIcon";
 import { PokemonImage } from "./PokemonImage";
-import { selectPokemonHasMoreToFetch } from "../store/pokemon/selectors";
+import {
+  selectPokemonFilters,
+  selectPokemonHasMoreToFetch,
+} from "../store/pokemon/selectors";
 import { setCurrentPage } from "../store/pokemon/slice";
 
 type PokemonCard = {
@@ -20,6 +23,8 @@ type PokemonCard = {
 export const PokemonCard = ({ pokemon, isLastCard }: PokemonCard) => {
   const dispatch = useDispatch<AppDispatch>();
   const hasMoreToFetch = useSelector(selectPokemonHasMoreToFetch);
+  const filters = useSelector(selectPokemonFilters);
+  const isFilterApplied = filters.showFavorites || filters.search;
 
   const [shouldShowDetails, setShouldShowDetails] = useState(false);
   const cardRef = useRef<HTMLElement>(null);
@@ -32,7 +37,7 @@ export const PokemonCard = ({ pokemon, isLastCard }: PokemonCard) => {
   useIntersectionObserver({
     cb: updatePagination,
     element: cardRef,
-    shouldBeObserved: isLastCard,
+    shouldBeObserved: isLastCard && !isFilterApplied,
     hasMore: hasMoreToFetch,
   });
 
