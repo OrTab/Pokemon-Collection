@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 type Params = {
   cb: () => void;
-  element: HTMLElement | null;
+  element: React.RefObject<HTMLElement | null>;
   shouldBeObserved: boolean;
   hasMore: boolean;
 };
@@ -14,7 +14,7 @@ export const useIntersectionObserver = ({
   hasMore,
 }: Params) => {
   useEffect(() => {
-    if (!shouldBeObserved || !element || !hasMore) {
+    if (!shouldBeObserved || !element?.current || !hasMore) {
       return;
     }
 
@@ -26,8 +26,8 @@ export const useIntersectionObserver = ({
       });
     });
 
-    observer.observe(element);
+    observer.observe(element.current);
 
     return () => observer.disconnect();
-  }, [cb, element, shouldBeObserved]);
+  }, [cb, element, hasMore, shouldBeObserved]);
 };

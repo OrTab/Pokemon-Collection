@@ -1,6 +1,6 @@
 import { EvolutionChain } from "./types/types";
 
-export const extractEvolutionName = (
+export const extractEvolutionNames = (
   chain: EvolutionChain,
   evolutionNames: string[] = []
 ): string[] => {
@@ -8,7 +8,7 @@ export const extractEvolutionName = (
     const nextChain = chain.evolves_to[0];
     const { name: evolutionName } = chain.species;
     evolutionNames.push(evolutionName);
-    return extractEvolutionName(nextChain, evolutionNames);
+    return extractEvolutionNames(nextChain, evolutionNames);
   } else {
     return evolutionNames;
   }

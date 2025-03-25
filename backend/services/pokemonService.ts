@@ -6,7 +6,7 @@ import {
   FetchedPokemon,
   PokemonSpecies,
 } from "../types/types";
-import { extractEvolutionName, getAllSettledValues } from "../utils";
+import { extractEvolutionNames, getAllSettledValues } from "../utils";
 import Favorite from "../models/Favorite";
 
 const fetchPokemons = async ({
@@ -37,7 +37,7 @@ const fetchPokemons = async ({
 
     // process the pokemons
     const processedPokemons = fetchedPokemons.map(async (pokemon) => {
-      const evolution = await fetchPokemonEvolution(pokemon.species.url);
+      const evolutions = await fetchPokemonEvolutions(pokemon.species.url);
       return {
         id: pokemon.id,
         name: pokemon.name,
@@ -46,7 +46,7 @@ const fetchPokemons = async ({
           (ability: PokemonAbility) => ability.ability.name
         ),
         types: pokemon.types.map((type: PokemonType) => type.type.name),
-        evolution,
+        evolutions,
       };
     });
 
@@ -70,14 +70,14 @@ const fetchPokemons = async ({
   }
 };
 
-const fetchPokemonEvolution = async (url: string) => {
+const fetchPokemonEvolutions = async (url: string) => {
   const response = await axios.get(url);
   const evolution: PokemonSpecies = response.data;
 
   const evolutionChainResponse = await axios.get(evolution.evolution_chain.url);
   const evolutionChainData = evolutionChainResponse.data;
   // extract the evolution name recursively
-  return extractEvolutionName(evolutionChainData.chain);
+  return extractEvolutionNames(evolutionChainData.chain);
 };
 
 const addFavorite = async (pokemonId: string) => {

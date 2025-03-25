@@ -12,7 +12,7 @@ import { LoadingPokemonsSkeletons } from "../components/LoadingPokemonsSkeletons
 import { useLoadAppData } from "../hooks/useLoadAppData";
 
 export const Pokemons = () => {
-  const { pokemons, loading, error, favorites } = useSelector(
+  const { pokemons, loading, error } = useSelector(
     (state: RootState) => state.pokemon
   );
 
@@ -46,7 +46,6 @@ export const Pokemons = () => {
             key={pokemon.id}
             pokemon={pokemon}
             isLastCard={index === pokemons.length - 1}
-            isFavorite={!!favorites[pokemon.id]}
           />
         ))}
       </SimpleGrid>
