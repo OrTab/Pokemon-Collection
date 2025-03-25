@@ -1,9 +1,17 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { pokemonService } from "../services/pokemonService";
+import { getCache, setCache } from "../utils/redisUtils";
+import { Favorite } from "../../shared/types";
+import { IFavorite } from "../models/Favorite";
+import { CACHE_KEYS } from "../cache/constants";
 
 const PAGE_LIMIT = 20;
 
-const fetchPokemons = async (req: Request, res: Response) => {
+const fetchPokemons = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const page = parseInt(req.query.page as string) || 1;
     const pokemons = await pokemonService.fetchPokemons({
@@ -11,6 +19,7 @@ const fetchPokemons = async (req: Request, res: Response) => {
       limit: PAGE_LIMIT,
     });
     res.status(200).json(pokemons);
+    next();
   } catch (error) {
     console.error("Error in getPokemons:", error);
     res.status(500).json({ error: "Failed to fetch pokemons" });
@@ -35,6 +44,11 @@ const addFavorite = async (req: Request, res: Response) => {
   }
   try {
     const favorite = await pokemonService.addFavorite(pokemonId);
+    const cachedFavorites = await getCache<IFavorite[]>(CACHE_KEYS.FAVORITES);
+    if (cachedFavorites) {
+      cachedFavorites.push(favorite);
+      setCache(CACHE_KEYS.FAVORITES, cachedFavorites);
+    }
     res.status(200).json(favorite);
   } catch (error) {
     console.error("Error in addFavorite:", error);
@@ -50,6 +64,13 @@ const deleteFavorite = async (req: Request, res: Response) => {
   }
   try {
     await pokemonService.deleteFavorite(parseInt(pokemonId));
+    const cachedFavorites = await getCache<IFavorite[]>(CACHE_KEYS.FAVORITES);
+    if (cachedFavorites) {
+      const filteredFavorites = cachedFavorites.filter(
+        (favorite) => favorite.pokemonId !== parseInt(pokemonId)
+      );
+      setCache(CACHE_KEYS.FAVORITES, filteredFavorites);
+    }
     res.status(204).send();
   } catch (error) {
     console.error("Error in deleteFavoritePokemon:", error);

@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import router from "./routes";
 import { connectToDatabase } from "./mongodb";
+import { initializeRedis } from "./cache/redis";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -16,13 +17,17 @@ app.use(
 
 app.use("/api", router);
 
-connectToDatabase()
-  .then(() => {
+const startServer = async () => {
+  try {
+    await connectToDatabase();
+    await initializeRedis();
     app.listen(port, () => {
       console.log(`Server is running at http://localhost:${port}`);
     });
-  })
-  .catch((error) => {
-    console.error("Failed to connect to database:", error);
+  } catch (error) {
+    console.error("Failed to connect to database or redis:", error);
     process.exit(1);
-  });
+  }
+};
+
+startServer();
