@@ -9,13 +9,14 @@ import {
 export const LoadingPokemonsSkeletons = () => {
   return (
     <Container
+      padding={12}
       maxW='container.xl'
       py={8}
       display='flex'
       flexDirection='column'
       gap={8}
     >
-      <Heading as='h1' mb={8} textAlign='center'>
+      <Heading as='h1' textAlign='center' color='blue.600'>
         Loading Pokémon...
       </Heading>
       <Skeleton height='73px' />

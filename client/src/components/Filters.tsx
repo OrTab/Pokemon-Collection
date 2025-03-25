@@ -27,7 +27,7 @@ export const Filters = () => {
   return (
     <Box p={4} borderWidth='1px' borderRadius='lg' shadow='sm'>
       <Flex direction={{ base: "column", md: "row" }} gap={4}>
-        <Flex flex={1}>
+        <Flex flex={1} alignItems='center' gap={4}>
           <FaSearch color='gray.400' />
 
           <Input
@@ -36,7 +36,7 @@ export const Filters = () => {
           />
         </Flex>
 
-        <Flex gap={2}>
+        <Flex gap={2} justifyContent='center'>
           <Button
             colorScheme={showFavorites ? "pink" : "gray"}
             variant={showFavorites ? "solid" : "outline"}

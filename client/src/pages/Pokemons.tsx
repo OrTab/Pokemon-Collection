@@ -34,19 +34,12 @@ export const Pokemons = () => {
       flexDirection='column'
       gap={8}
     >
-      <Heading as='h1' mb={8} textAlign='center' color='blue.600'>
+      <Heading as='h1' textAlign='center' color='blue.600'>
         Pokémon Collection
       </Heading>
       <Filters />
       <PokemonList />
-      {loading && (
-        <Spinner
-          size='xl'
-          marginTop={15}
-          marginLeft='auto'
-          marginRight='auto'
-        />
-      )}
+      {loading && <Spinner size='lg' marginLeft='auto' marginRight='auto' />}
     </Container>
   );
 };

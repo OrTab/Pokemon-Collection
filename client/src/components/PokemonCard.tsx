@@ -58,10 +58,11 @@ export const PokemonCard = React.memo(
           key={name}
           height={CARD_HEIGHT}
           borderRadius='lg'
-          boxShadow='md'
+          boxShadow='0px 2px 6px rgba(66, 66, 66, 0.2), 0px -2px 8px rgba(0, 0, 0, 0.1)'
           _hover={{
+            boxShadow:
+              "0px 4px 12px rgba(66, 66, 66, 0.2), 0px -4px 12px rgba(0, 0, 0, 0.1)",
             transform: "translateY(-5px)",
-            boxShadow: "xl",
           }}
           transition='all 0.3s ease'
           bg='white'

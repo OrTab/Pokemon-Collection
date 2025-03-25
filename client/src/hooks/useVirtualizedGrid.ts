@@ -73,6 +73,10 @@ export function useVirtualizedGrid<T>({
     return items.slice(startIndex, endIndex + 1);
   }, [items, startIndex, endIndex]);
 
+  const offsetTop = useMemo(() => {
+    return visibleStartRow * itemHeight;
+  }, [visibleStartRow, itemHeight]);
+
   return {
     containerRef,
     visibleItems,
@@ -82,6 +86,6 @@ export function useVirtualizedGrid<T>({
     visibleEndRow,
     totalRows,
     totalHeight: totalRows * itemHeight,
-    offsetTop: visibleStartRow * itemHeight,
+    offsetTop,
   };
 }
