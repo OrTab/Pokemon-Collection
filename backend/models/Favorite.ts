@@ -18,7 +18,4 @@ const FavoriteSchema = new Schema(
   { versionKey: false }
 );
 
-// Compound index to prevent duplicate favorites for the same user
-FavoriteSchema.index({ userId: 1, pokemonId: 1 }, { unique: true });
-
 export default mongoose.model<IFavorite>("favorites", FavoriteSchema);
