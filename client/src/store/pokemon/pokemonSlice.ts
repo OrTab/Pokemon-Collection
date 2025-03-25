@@ -1,5 +1,10 @@
 import { pokemonController } from "./../../controllers/pokemonController";
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  PayloadAction,
+  createSelector,
+} from "@reduxjs/toolkit";
 import { PokemonState } from "./types";
 
 import { Favorite, Pokemon } from "../../../../shared/types";
@@ -60,6 +65,10 @@ const initialState: PokemonState = {
   currentPage: 1,
   hasMoreToFetch: true,
   favorites: {},
+  filters: {
+    showFavorites: false,
+    search: "",
+  },
 };
 
 const pokemonSlice = createSlice({
@@ -69,12 +78,21 @@ const pokemonSlice = createSlice({
     setCurrentPage: (state) => {
       state.currentPage = state.currentPage + 1;
     },
+    setFilters: (
+      state,
+      action: PayloadAction<{ showFavorites: boolean; search: string }>
+    ) => {
+      state.filters = action.payload;
+    },
     addFavoriteOptimistic: (state, action: PayloadAction<number>) => {
       const pokemonId = action.payload;
-      state.favorites[pokemonId] = {
-        _id: "temp-" + Date.now(), // Temporary ID
-        pokemonId: pokemonId,
-        createdAt: new Date().toISOString(),
+      state.favorites = {
+        ...state.favorites,
+        [pokemonId]: {
+          _id: "temp-" + Date.now(),
+          pokemonId: pokemonId,
+          createdAt: new Date().toISOString(),
+        },
       };
     },
     removeFavoriteOptimistic: (state, action: PayloadAction<number>) => {
@@ -85,7 +103,10 @@ const pokemonSlice = createSlice({
     },
     restoreFavoriteOptimistic: (state, action: PayloadAction<Favorite>) => {
       const favorite = action.payload;
-      state.favorites[favorite.pokemonId] = favorite;
+      state.favorites = {
+        ...state.favorites,
+        [favorite.pokemonId]: favorite,
+      };
     },
   },
   extraReducers: (builder) => {
@@ -131,20 +152,36 @@ const pokemonSlice = createSlice({
 });
 
 // Actions
+export const { setCurrentPage, setFilters } = pokemonSlice.actions;
 
-export const {
-  setCurrentPage,
-  addFavoriteOptimistic,
-  removeFavoriteOptimistic,
-  restoreFavoriteOptimistic,
-} = pokemonSlice.actions;
+// Selectors
+export const selectPokemons = (state: RootState) => state.pokemon.pokemons;
+export const selectPokemonFilters = (state: RootState) => state.pokemon.filters;
+export const selectPokemonFavorites = (state: RootState) =>
+  state.pokemon.favorites;
+export const selectPokemonLoading = (state: RootState) => state.pokemon.loading;
+export const selectPokemonError = (state: RootState) => state.pokemon.error;
+export const selectPokemonCurrentPage = (state: RootState) =>
+  state.pokemon.currentPage;
+export const selectPokemonHasMoreToFetch = (state: RootState) =>
+  state.pokemon.hasMoreToFetch;
 
-// Reducer
-
-export default pokemonSlice.reducer;
+export const selectFilteredPokemons = createSelector(
+  [selectPokemons, selectPokemonFilters, selectPokemonFavorites],
+  (pokemons, filters, favorites) => {
+    return pokemons.filter((pokemon) => {
+      const isFavorite = favorites[pokemon.id] !== undefined;
+      const isSearchMatch = pokemon.name
+        .toLowerCase()
+        .startsWith(filters.search.toLowerCase());
+      return filters.showFavorites
+        ? isFavorite && isSearchMatch
+        : isSearchMatch;
+    });
+  }
+);
 
 // Listeners
-
 export const pageListenerMiddleware = createListenerMiddleware();
 
 pageListenerMiddleware.startListening({
@@ -153,3 +190,6 @@ pageListenerMiddleware.startListening({
     await listenerApi.dispatch(fetchPokemons());
   },
 });
+
+// Reducer
+export default pokemonSlice.reducer;

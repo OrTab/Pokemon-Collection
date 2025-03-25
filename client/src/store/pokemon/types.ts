@@ -6,4 +6,8 @@ export interface PokemonState {
   currentPage: number;
   hasMoreToFetch: boolean;
   favorites: Record<Favorite["pokemonId"], Favorite>;
+  filters: {
+    showFavorites: boolean;
+    search: string;
+  };
 }

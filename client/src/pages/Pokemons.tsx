@@ -1,20 +1,19 @@
-import { useSelector } from "react-redux";
-import { RootState } from "../store";
-import {
-  Container,
-  Heading,
-  SimpleGrid,
-  Spinner,
-  Text,
-} from "@chakra-ui/react";
-import { PokemonCard } from "../components/PokemonCard";
+import { Container, Heading, Spinner, Text } from "@chakra-ui/react";
 import { LoadingPokemonsSkeletons } from "../components/LoadingPokemonsSkeletons";
 import { useLoadAppData } from "../hooks/useLoadAppData";
+import { PokemonList } from "../components/PokemonList";
+import { Filters } from "../components/Filters";
+import {
+  selectPokemonError,
+  selectPokemonLoading,
+  selectPokemons,
+} from "../store/pokemon/pokemonSlice";
+import { useSelector } from "react-redux";
 
 export const Pokemons = () => {
-  const { pokemons, loading, error } = useSelector(
-    (state: RootState) => state.pokemon
-  );
+  const pokemons = useSelector(selectPokemons);
+  const loading = useSelector(selectPokemonLoading);
+  const error = useSelector(selectPokemonError);
 
   useLoadAppData();
 
@@ -39,16 +38,8 @@ export const Pokemons = () => {
       <Heading as='h1' mb={8} textAlign='center' color='blue.600'>
         Pokémon Collection
       </Heading>
-
-      <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} gap={6}>
-        {pokemons.map((pokemon, index) => (
-          <PokemonCard
-            key={pokemon.id}
-            pokemon={pokemon}
-            isLastCard={index === pokemons.length - 1}
-          />
-        ))}
-      </SimpleGrid>
+      <Filters />
+      <PokemonList />
       {loading && (
         <Spinner
           size='xl'

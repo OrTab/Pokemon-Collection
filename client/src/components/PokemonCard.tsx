@@ -4,8 +4,11 @@ import { Box, Heading, Badge } from "@chakra-ui/react";
 import styled from "styled-components";
 import { useIntersectionObserver } from "../hooks/useIntersactionObserver";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../store";
-import { setCurrentPage } from "../store/pokemon/pokemonSlice";
+import { AppDispatch } from "../store";
+import {
+  selectPokemonHasMoreToFetch,
+  setCurrentPage,
+} from "../store/pokemon/pokemonSlice";
 import { PokemonDetails } from "./PokemonDetails";
 import { FavoriteIcon } from "./FavoriteIcon";
 import { PokemonImage } from "./PokemonImage";
@@ -17,7 +20,7 @@ type PokemonCard = {
 
 export const PokemonCard = ({ pokemon, isLastCard }: PokemonCard) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { hasMoreToFetch } = useSelector((state: RootState) => state.pokemon);
+  const hasMoreToFetch = useSelector(selectPokemonHasMoreToFetch);
 
   const [shouldShowDetails, setShouldShowDetails] = useState(false);
   const cardRef = useRef<HTMLElement>(null);

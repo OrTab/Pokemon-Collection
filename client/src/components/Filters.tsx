@@ -1,0 +1,53 @@
+import { useDispatch, useSelector } from "react-redux";
+import { Box, Input, Flex, Button } from "@chakra-ui/react";
+import { FaSearch } from "react-icons/fa";
+import {
+  selectPokemonFilters,
+  setFilters,
+} from "../store/pokemon/pokemonSlice";
+import { useDebounce } from "../hooks/useDebaounce";
+import { useCallback } from "react";
+
+export const Filters = () => {
+  const dispatch = useDispatch();
+  const filters = useSelector(selectPokemonFilters);
+  const { showFavorites } = filters;
+
+  const setSearchQuery = useCallback(
+    (value: string) => {
+      dispatch(setFilters({ ...filters, search: value }));
+    },
+    [dispatch, filters]
+  );
+
+  const debouncedSearchQuery = useDebounce(setSearchQuery, 500);
+
+  const handleToggleFavorites = () => {
+    dispatch(setFilters({ ...filters, showFavorites: !filters.showFavorites }));
+  };
+
+  return (
+    <Box p={4} mb={4} borderWidth='1px' borderRadius='lg' shadow='sm'>
+      <Flex direction={{ base: "column", md: "row" }} gap={4}>
+        <Flex flex={1}>
+          <FaSearch color='gray.400' />
+
+          <Input
+            placeholder='Search Pokémon...'
+            onChange={(e) => debouncedSearchQuery(e.target.value)}
+          />
+        </Flex>
+
+        <Flex gap={2}>
+          <Button
+            colorScheme={showFavorites ? "pink" : "gray"}
+            variant={showFavorites ? "solid" : "outline"}
+            onClick={handleToggleFavorites}
+          >
+            {showFavorites ? "Showing Favorites" : "Show Favorites"}
+          </Button>
+        </Flex>
+      </Flex>
+    </Box>
+  );
+};

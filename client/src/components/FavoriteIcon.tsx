@@ -1,9 +1,13 @@
 import { IconButton } from "@chakra-ui/react";
 import { useCallback } from "react";
-import { AppDispatch, RootState } from "../store";
+import { AppDispatch } from "../store";
 import { useDispatch, useSelector } from "react-redux";
 import { FaHeart } from "react-icons/fa";
-import { addFavorite, deleteFavorite } from "../store/pokemon/pokemonSlice";
+import {
+  addFavorite,
+  deleteFavorite,
+  selectPokemonFavorites,
+} from "../store/pokemon/pokemonSlice";
 
 type FavoriteIconProps = {
   pokemonId: number;
@@ -13,9 +17,9 @@ type FavoriteIconProps = {
 export const FavoriteIcon = ({ pokemonId, className }: FavoriteIconProps) => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const isFavorite = useSelector(
-    (state: RootState) => !!state.pokemon.favorites[pokemonId]
-  );
+  const favorites = useSelector(selectPokemonFavorites);
+  const isFavorite = !!favorites[pokemonId];
+
   const handleFavorite = useCallback(
     (e: React.MouseEvent) => {
       e.stopPropagation();
