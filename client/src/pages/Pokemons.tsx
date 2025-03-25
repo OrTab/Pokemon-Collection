@@ -17,7 +17,9 @@ export const Pokemons = () => {
 
   useLoadAppData();
 
-  if (loading && pokemons.length === 0) {
+  const isInitialLoading = loading && pokemons.length === 0;
+
+  if (isInitialLoading) {
     return <LoadingPokemonsSkeletons />;
   }
 
@@ -34,7 +36,13 @@ export const Pokemons = () => {
     );
 
   return (
-    <Container maxW='container.xl' py={8} display='flex' flexDirection='column'>
+    <Container
+      maxW='container.xl'
+      py={8}
+      display='flex'
+      flexDirection='column'
+      gap={8}
+    >
       <Heading as='h1' mb={8} textAlign='center' color='blue.600'>
         Pokémon Collection
       </Heading>
