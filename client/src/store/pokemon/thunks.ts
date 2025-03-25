@@ -8,13 +8,27 @@ import {
 } from "./slice";
 import { Favorite } from "../../../../shared/types";
 import { PokemonState } from "./types";
+import { addMessage } from "../message/slice";
 
 export const fetchPokemons = createAsyncThunk(
   "pokemon/fetchPokemons",
-  (_, { getState }) => {
+  async (_, { getState, dispatch }) => {
     const state = getState() as RootState;
     const currentPage = state.pokemon.currentPage;
-    return pokemonController.fetchPokemons({ page: currentPage });
+    try {
+      return await pokemonController.fetchPokemons({ page: currentPage });
+    } catch (error) {
+      // we don't want to show the toast message if the user is on the first page
+      if (currentPage > 1) {
+        dispatch(
+          addMessage({
+            text: "Failed to fetch pokemons",
+            type: "error",
+          })
+        );
+      }
+      throw error;
+    }
   }
 );
 
@@ -28,9 +42,19 @@ export const addFavorite = createAsyncThunk(
   async (pokemonId: number, { dispatch }) => {
     dispatch(addFavoriteOptimistic(pokemonId));
     try {
-      return await pokemonController.addFavorite(pokemonId);
+      const response = await pokemonController.addFavorite(pokemonId);
+      dispatch(
+        addMessage({ text: "Pokemon added to favorites", type: "success" })
+      );
+      return response;
     } catch (error) {
       dispatch(removeFavoriteOptimistic(pokemonId));
+      dispatch(
+        addMessage({
+          text: "Failed to add pokemon to favorites",
+          type: "error",
+        })
+      );
       throw error;
     }
   }
@@ -44,10 +68,20 @@ export const deleteFavorite = createAsyncThunk(
 
     dispatch(removeFavoriteOptimistic(pokemonId));
     try {
-      return await pokemonController.deleteFavorite(pokemonId);
+      const response = await pokemonController.deleteFavorite(pokemonId);
+      dispatch(
+        addMessage({ text: "Pokemon removed from favorites", type: "success" })
+      );
+      return response;
     } catch (error) {
       if (currentFavorite) {
         dispatch(restoreFavoriteOptimistic(currentFavorite));
+        dispatch(
+          addMessage({
+            text: "Failed to remove pokemon from favorites",
+            type: "error",
+          })
+        );
       }
       throw error;
     }

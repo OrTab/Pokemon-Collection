@@ -6,8 +6,7 @@ const fetchPokemons = async ({
   page,
 }: FetchPokemonsParams): Promise<Pokemon[]> => {
   try {
-    const pokemons = await pokemonService.fetchPokemons({ page });
-    return pokemons;
+    return pokemonService.fetchPokemons({ page });
   } catch (error) {
     console.error("Error in fetchAllPokemons:", error);
     throw error;
@@ -16,8 +15,7 @@ const fetchPokemons = async ({
 
 const fetchFavorites = async (): Promise<Favorite[]> => {
   try {
-    const favorites = await pokemonService.fetchFavorites();
-    return favorites;
+    return await pokemonService.fetchFavorites();
   } catch (error) {
     console.error("Error in fetchFavorites:", error);
     throw error;
@@ -26,8 +24,7 @@ const fetchFavorites = async (): Promise<Favorite[]> => {
 
 const addFavorite = async (pokemonId: number) => {
   try {
-    const favorite = await pokemonService.addFavorite(pokemonId);
-    return favorite;
+    return await pokemonService.addFavorite(pokemonId);
   } catch (error) {
     console.error("Error in addFavorite:", error);
     throw error;
@@ -36,8 +33,7 @@ const addFavorite = async (pokemonId: number) => {
 
 const deleteFavorite = async (pokemonId: number) => {
   try {
-    const favorite = await pokemonService.deleteFavorite(pokemonId);
-    return favorite;
+    return await pokemonService.deleteFavorite(pokemonId);
   } catch (error) {
     console.error("Error in deleteFavorite:", error);
     throw error;

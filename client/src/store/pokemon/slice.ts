@@ -34,7 +34,7 @@ const pokemonSlice = createSlice({
       state.favorites = {
         ...state.favorites,
         [pokemonId]: {
-          _id: "temp-" + Date.now(),
+          _id: crypto.randomUUID(),
           pokemonId: pokemonId,
           createdAt: new Date().toISOString(),
         },
