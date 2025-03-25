@@ -20,4 +20,5 @@ export const CONFIG = {
     max: 100, // 100 requests per windowMs
     message: "Too many requests from this IP, please try again later.",
   },
+  apiUrl: process.env.API_URL,
 };

@@ -19,6 +19,11 @@ app.use(limiter);
 // JSON parser
 app.use(express.json());
 
+// Health check route
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "OK" });
+});
+
 // Routes
 app.use("/api", router);
 
