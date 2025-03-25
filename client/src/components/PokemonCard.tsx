@@ -5,13 +5,12 @@ import styled from "styled-components";
 import { useIntersectionObserver } from "../hooks/useIntersactionObserver";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../store";
-import {
-  selectPokemonHasMoreToFetch,
-  setCurrentPage,
-} from "../store/pokemon/pokemonSlice";
+
 import { PokemonDetails } from "./PokemonDetails";
 import { FavoriteIcon } from "./FavoriteIcon";
 import { PokemonImage } from "./PokemonImage";
+import { selectPokemonHasMoreToFetch } from "../store/pokemon/selectors";
+import { setCurrentPage } from "../store/pokemon/slice";
 
 type PokemonCard = {
   pokemon: Pokemon;

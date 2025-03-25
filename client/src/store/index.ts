@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import pokemonReducer, { pageListenerMiddleware } from "./pokemon/pokemonSlice";
+import { pageListenerMiddleware } from "./pokemon/middleware";
+import { pokemonReducer } from "./pokemon/slice";
 
 export const store = configureStore({
   reducer: {

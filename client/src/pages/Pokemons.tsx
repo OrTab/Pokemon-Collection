@@ -3,12 +3,13 @@ import { LoadingPokemonsSkeletons } from "../components/LoadingPokemonsSkeletons
 import { useLoadAppData } from "../hooks/useLoadAppData";
 import { PokemonList } from "../components/PokemonList";
 import { Filters } from "../components/Filters";
+
+import { useSelector } from "react-redux";
 import {
   selectPokemonError,
   selectPokemonLoading,
   selectPokemons,
-} from "../store/pokemon/pokemonSlice";
-import { useSelector } from "react-redux";
+} from "../store/pokemon/selectors";
 
 export const Pokemons = () => {
   const pokemons = useSelector(selectPokemons);
