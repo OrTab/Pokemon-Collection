@@ -5,10 +5,7 @@ let redisClient: Redis;
 
 const initializeRedis = () => {
   try {
-    redisClient = new Redis({
-      host: CONFIG.redis.host,
-      port: CONFIG.redis.port,
-    });
+    redisClient = new Redis(CONFIG.redis.REDIS_URL);
 
     redisClient.on("connect", () => {
       console.log("Connected to Redis successfully");

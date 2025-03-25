@@ -13,8 +13,7 @@ export const CONFIG = {
     },
   },
   redis: {
-    host: process.env.REDIS_HOST || "localhost",
-    port: parseInt(process.env.REDIS_PORT || "6379"),
+    REDIS_URL: process.env.REDIS_URL || "redis://localhost:6379",
   },
   rateLimit: {
     windowMs: 1 * 60 * 1000, // 1 minute
