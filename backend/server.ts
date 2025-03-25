@@ -5,6 +5,7 @@ import router from "./routes";
 import { connectToDatabase } from "./mongodb";
 import { initializeRedis } from "./cache/redis";
 import { CONFIG } from "./config";
+import { runKeepAlive } from "./utils/keepAlive";
 
 const app = express();
 
@@ -31,7 +32,7 @@ const startServer = async () => {
   try {
     await connectToDatabase();
     await initializeRedis();
-
+    runKeepAlive();
     app.listen(CONFIG.port, () => {
       console.log(`Server running at http://${CONFIG.host}:${CONFIG.port}`);
     });
