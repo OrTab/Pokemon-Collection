@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import rateLimit from "express-rate-limit";
 import router from "./routes";
 import { connectToDatabase } from "./mongodb";
 import { initializeRedis } from "./cache/redis";
@@ -7,8 +8,15 @@ import { CONFIG } from "./config";
 
 const app = express();
 
+const limiter = rateLimit(CONFIG.rateLimit);
+
 // CORS configuration
 app.use(cors(CONFIG.cors));
+
+// Rate limiting
+app.use(limiter);
+
+// JSON parser
 app.use(express.json());
 
 // Routes

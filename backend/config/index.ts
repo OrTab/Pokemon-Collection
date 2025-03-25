@@ -16,4 +16,9 @@ export const CONFIG = {
     host: process.env.REDIS_HOST || "localhost",
     port: parseInt(process.env.REDIS_PORT || "6379"),
   },
+  rateLimit: {
+    windowMs: 1 * 60 * 1000, // 1 minute
+    max: 100, // 100 requests per windowMs
+    message: "Too many requests from this IP, please try again later.",
+  },
 };

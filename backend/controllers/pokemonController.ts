@@ -49,9 +49,12 @@ const addFavorite = async (req: Request, res: Response) => {
       setCache(CACHE_KEYS.FAVORITES, cachedFavorites);
     }
     res.status(200).json(favorite);
-  } catch (error) {
-    console.error("Error in addFavorite:", error);
-    res.status(500).json({ error: "Failed to add favorite" });
+  } catch (error: any) {
+    if (error.code === 11000) {
+      res.status(409).json({ error: "Pokemon is already in favorites" });
+    } else {
+      res.status(500).json({ error: "Failed to add favorite" });
+    }
   }
 };
 

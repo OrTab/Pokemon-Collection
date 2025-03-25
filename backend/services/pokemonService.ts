@@ -81,9 +81,7 @@ const fetchPokemonEvolutions = async (url: string) => {
 };
 
 const addFavorite = async (pokemonId: string) => {
-  return Favorite.create({
-    pokemonId,
-  });
+  return Favorite.create({ pokemonId });
 };
 
 const getFavorites = async () => {
