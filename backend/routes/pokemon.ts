@@ -1,16 +1,11 @@
 import express from "express";
-import {
-  addFavoritePokemon,
-  deleteFavoritePokemon,
-  getFavoritesPokemons,
-  getPokemons,
-} from "../controllers/pokemonController";
+import { pokemonController } from "../controllers/pokemonController";
 
 const pokemonRouter = express.Router();
 
-pokemonRouter.get("/", getPokemons);
-pokemonRouter.post("/favorite", addFavoritePokemon);
-pokemonRouter.get("/favorites", getFavoritesPokemons);
-pokemonRouter.delete("/favorite/:id", deleteFavoritePokemon);
+pokemonRouter.get("/", pokemonController.fetchPokemons);
+pokemonRouter.post("/favorites", pokemonController.addFavorite);
+pokemonRouter.get("/favorites", pokemonController.getFavorites);
+pokemonRouter.delete("/favorites/:pokemonId", pokemonController.deleteFavorite);
 
 export default pokemonRouter;

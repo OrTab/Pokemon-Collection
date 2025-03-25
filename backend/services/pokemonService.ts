@@ -9,7 +9,7 @@ import {
 import { extractEvolutionName, getAllSettledValues } from "../utils";
 import Favorite from "../models/Favorite";
 
-export const fetchPokemons = async ({
+const fetchPokemons = async ({
   offset,
   limit,
 }: {
@@ -80,16 +80,23 @@ const fetchPokemonEvolution = async (url: string) => {
   return extractEvolutionName(evolutionChainData.chain);
 };
 
-export const addFavorite = async (pokemonId: string) => {
+const addFavorite = async (pokemonId: string) => {
   return Favorite.create({
     pokemonId,
   });
 };
 
-export const getFavorites = async () => {
+const getFavorites = async () => {
   return Favorite.find();
 };
 
-export const deleteFavorite = async (id: string) => {
-  return Favorite.findByIdAndDelete(id);
+const deleteFavorite = async (pokemonId: number) => {
+  return Favorite.findOneAndDelete({ pokemonId });
+};
+
+export const pokemonService = {
+  fetchPokemons,
+  addFavorite,
+  getFavorites,
+  deleteFavorite,
 };

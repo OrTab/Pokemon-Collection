@@ -1,7 +1,5 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../store";
-import { fetchPokemons } from "../store/pokemon/pokemonSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 import {
   Container,
   Heading,
@@ -11,16 +9,14 @@ import {
 } from "@chakra-ui/react";
 import { PokemonCard } from "../components/PokemonCard";
 import { LoadingPokemonsSkeletons } from "../components/LoadingPokemonsSkeletons";
+import { useLoadAppData } from "../hooks/useLoadAppData";
 
 export const Pokemons = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { pokemons, loading, error } = useSelector(
+  const { pokemons, loading, error, favorites } = useSelector(
     (state: RootState) => state.pokemon
   );
 
-  useEffect(() => {
-    dispatch(fetchPokemons());
-  }, [dispatch]);
+  useLoadAppData();
 
   if (loading && pokemons.length === 0) {
     return <LoadingPokemonsSkeletons />;
@@ -50,6 +46,7 @@ export const Pokemons = () => {
             key={pokemon.id}
             pokemon={pokemon}
             isLastCard={index === pokemons.length - 1}
+            isFavorite={!!favorites[pokemon.id]}
           />
         ))}
       </SimpleGrid>
