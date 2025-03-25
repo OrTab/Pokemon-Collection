@@ -3,6 +3,7 @@ import { Dialog, Box, Badge, Flex, Button, Heading } from "@chakra-ui/react";
 import { formatName, getTypeColor } from "../utils";
 import { FavoriteIcon } from "./FavoriteIcon";
 import { PokemonImage } from "./PokemonImage";
+import styled from "styled-components";
 
 type PokemonDetailsProps = {
   pokemon: Pokemon;
@@ -17,7 +18,7 @@ export const PokemonDetails = ({ pokemon, onClose }: PokemonDetailsProps) => {
         <Dialog.Content>
           <Dialog.Header alignItems='center'>
             <Dialog.Title>{pokemon.name}</Dialog.Title>
-            <FavoriteIcon pokemonId={pokemon.id} />
+            <StyledFavoriteIcon pokemonId={pokemon.id} />
             <Dialog.CloseTrigger onClick={onClose} />
           </Dialog.Header>
           <Dialog.Body>
@@ -67,3 +68,7 @@ const Section = ({ title, data }: { title: string; data: string[] }) => {
     </Box>
   );
 };
+
+const StyledFavoriteIcon = styled(FavoriteIcon)`
+  outline: none;
+`;
