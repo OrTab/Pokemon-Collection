@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { pokemonService } from "../services/pokemonService";
 import { getCache, setCache } from "../cache/redisUtils";
 import { IFavorite } from "../models/Favorite";
@@ -6,11 +6,7 @@ import { CACHE_KEYS } from "../cache/constants";
 
 const PAGE_LIMIT = 40;
 
-const fetchPokemons = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const fetchPokemons = async (req: Request, res: Response) => {
   try {
     const page = parseInt(req.query.page as string) || 1;
     const pokemons = await pokemonService.fetchPokemons({
@@ -18,7 +14,6 @@ const fetchPokemons = async (
       limit: PAGE_LIMIT,
     });
     res.status(200).json(pokemons);
-    next();
   } catch (error) {
     console.error("Error in getPokemons:", error);
     res.status(500).json({ error: "Failed to fetch pokemons" });

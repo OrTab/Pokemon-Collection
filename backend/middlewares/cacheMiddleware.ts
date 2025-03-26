@@ -21,8 +21,14 @@ export const cacheMiddleware =
 
     const originalJson = res.json;
     res.json = function (data: any) {
-      console.log("Setting cache:", cacheKey);
-      setCache(cacheKey, data, expiration);
+      // Only cache successful responses (status codes 200-299)
+      if (res.statusCode >= 200 && res.statusCode < 300) {
+        console.log("Setting cache:", cacheKey);
+        setCache(cacheKey, data, expiration);
+      } else {
+        console.log("Not caching error response for:", cacheKey);
+      }
+
       return originalJson.call(this, data);
     };
 
