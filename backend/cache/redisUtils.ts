@@ -2,11 +2,15 @@ import { redisClient } from "../cache/redis";
 
 const DEFAULT_EXPIRATION = 3600; // 1 hour
 
-export const setCache = async (
-  key: string,
-  data: any,
-  expireSeconds = DEFAULT_EXPIRATION
-): Promise<void> => {
+export const setCache = async ({
+  key,
+  data,
+  expireSeconds = DEFAULT_EXPIRATION,
+}: {
+  key: string;
+  data: any;
+  expireSeconds?: number;
+}): Promise<void> => {
   try {
     await redisClient.setex(key, expireSeconds, JSON.stringify(data));
   } catch (error) {

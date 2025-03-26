@@ -41,7 +41,7 @@ const addFavorite = async (req: Request, res: Response) => {
     const cachedFavorites = await getCache<IFavorite[]>(CACHE_KEYS.FAVORITES);
     if (cachedFavorites) {
       cachedFavorites.push(favorite);
-      setCache(CACHE_KEYS.FAVORITES, cachedFavorites);
+      setCache({ key: CACHE_KEYS.FAVORITES, data: cachedFavorites });
     }
     res.status(200).json(favorite);
   } catch (error: any) {
@@ -66,7 +66,7 @@ const deleteFavorite = async (req: Request, res: Response) => {
       const filteredFavorites = cachedFavorites.filter(
         (favorite) => favorite.pokemonId !== parseInt(pokemonId)
       );
-      setCache(CACHE_KEYS.FAVORITES, filteredFavorites);
+      setCache({ key: CACHE_KEYS.FAVORITES, data: filteredFavorites });
     }
     res.status(204).send();
   } catch (error) {

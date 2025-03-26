@@ -24,7 +24,7 @@ export const cacheMiddleware =
       // Only cache successful responses (status codes 200-299)
       if (res.statusCode >= 200 && res.statusCode < 300) {
         console.log("Setting cache:", cacheKey);
-        setCache(cacheKey, data, expiration);
+        setCache({ key: cacheKey, data, expireSeconds: expiration });
       } else {
         console.log("Not caching error response for:", cacheKey);
       }
