@@ -43,6 +43,7 @@ export const PokemonImage = ({ sprites, className }: PokemonImageProps) => {
         ))
       ) : (
         <Image
+          height='100%'
           src='https://coffective.com/wp-content/uploads/2018/06/default-featured-image.png.jpg'
           alt='default'
         />
