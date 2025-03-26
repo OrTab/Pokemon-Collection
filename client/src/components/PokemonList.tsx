@@ -10,7 +10,7 @@ import styled from "styled-components";
 const POKEMON_LIST_DEFAULT_HEIGHT = 690;
 export const POKEMON_LIST_COLUMNS = { base: 1, sm: 2, md: 3, lg: 4 };
 const BUFFER_ROWS = 4;
-const INDEX_OFFSET_FOR_OBSERVATION = 5;
+const OBSERVATION_OFFSET = 5;
 
 type PokemonListProps = {
   shouldShowLoading: boolean;
@@ -32,6 +32,7 @@ export const PokemonList = ({ shouldShowLoading }: PokemonListProps) => {
     visibleItems: visiblePokemons,
     totalHeight,
     offsetTop,
+    startIndex,
   } = useVirtualizedGrid<Pokemon>({
     itemHeight: CARD_HEIGHT,
     itemsPerRow: columnCount,
@@ -52,16 +53,19 @@ export const PokemonList = ({ shouldShowLoading }: PokemonListProps) => {
           gap={12}
         >
           <SimpleGrid columns={columnCount} gap={6}>
-            {visiblePokemons.map((pokemon, index) => (
-              <PokemonCard
-                key={pokemon.id}
-                pokemon={pokemon}
-                cardShouldBeObserved={
-                  index ===
-                  visiblePokemons.length - INDEX_OFFSET_FOR_OBSERVATION
-                }
-              />
-            ))}
+            {visiblePokemons.map((pokemon, index) => {
+              const absoluteIndex = startIndex + index;
+              const shouldObserve =
+                pokemons.length - absoluteIndex <= OBSERVATION_OFFSET;
+
+              return (
+                <PokemonCard
+                  key={pokemon.id}
+                  pokemon={pokemon}
+                  cardShouldBeObserved={shouldObserve}
+                />
+              );
+            })}
           </SimpleGrid>
           {shouldShowLoading && (
             <LoaderContainer>
