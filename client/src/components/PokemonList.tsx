@@ -52,7 +52,7 @@ export const PokemonList = ({ shouldShowLoading }: PokemonListProps) => {
           flexDirection='column'
           gap={12}
         >
-          <SimpleGrid columns={columnCount} gap={6}>
+          <SimpleGrid columns={columnCount} gap={6} paddingBottom='20px'>
             {visiblePokemons.map((pokemon, index) => {
               const absoluteIndex = startIndex + index;
               const shouldObserve =
