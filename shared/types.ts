@@ -1,8 +1,6 @@
-import { PokemonSprites } from "../backend/types/types";
-
 export interface Pokemon {
   name: string;
-  sprites: PokemonSprites;
+  sprites: string[];
   abilities: string[];
   types: string[];
   evolutions: string[];

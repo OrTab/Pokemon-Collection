@@ -4,7 +4,7 @@ import { getCache, setCache } from "../cache/redisUtils";
 import { IFavorite } from "../models/Favorite";
 import { CACHE_KEYS } from "../cache/constants";
 
-const PAGE_LIMIT = 20;
+const PAGE_LIMIT = 24;
 
 const fetchPokemons = async (req: Request, res: Response) => {
   try {

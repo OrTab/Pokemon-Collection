@@ -6,7 +6,11 @@ import {
   FetchedPokemon,
   PokemonSpecies,
 } from "../types/types";
-import { extractEvolutionNames, getAllSettledValues } from "../utils";
+import {
+  checkIsImageUrl,
+  extractEvolutionNames,
+  getAllSettledValues,
+} from "../utils";
 import Favorite from "../models/Favorite";
 
 const fetchPokemons = async ({
@@ -41,7 +45,7 @@ const fetchPokemons = async ({
       return {
         id: pokemon.id,
         name: pokemon.name,
-        sprites: pokemon.sprites,
+        sprites: Object.values(pokemon.sprites).filter(checkIsImageUrl),
         abilities: pokemon.abilities.map(
           (ability: PokemonAbility) => ability.ability.name
         ),

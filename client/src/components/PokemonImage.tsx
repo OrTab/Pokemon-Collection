@@ -1,8 +1,7 @@
 import { Image } from "@chakra-ui/react";
 import styled from "styled-components";
 import { Pokemon } from "../../../shared/types";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { checkIsImageUrl } from "../utils";
+import { useCallback, useEffect, useState } from "react";
 
 type PokemonImageProps = {
   sprites: Pokemon["sprites"];
@@ -14,16 +13,9 @@ const SPRITES_INTERVAL = 1000;
 export const PokemonImage = ({ sprites, className }: PokemonImageProps) => {
   const [currentSpriteIndex, setCurrentSpriteIndex] = useState(0);
 
-  const spritesValues: string[] = useMemo(
-    () => Object.values(sprites).filter(checkIsImageUrl),
-    [sprites]
-  );
-
   const handleSpriteChange = useCallback(() => {
-    setCurrentSpriteIndex(
-      (prevIndex) => (prevIndex + 1) % spritesValues.length
-    );
-  }, [spritesValues]);
+    setCurrentSpriteIndex((prevIndex) => (prevIndex + 1) % sprites.length);
+  }, [sprites]);
 
   useEffect(() => {
     const intervalId = setInterval(handleSpriteChange, SPRITES_INTERVAL);
@@ -32,8 +24,8 @@ export const PokemonImage = ({ sprites, className }: PokemonImageProps) => {
 
   return (
     <ImagesContainer className={className}>
-      {spritesValues.length ? (
-        spritesValues.map((spriteUrl, index) => (
+      {sprites.length ? (
+        sprites.map((spriteUrl, index) => (
           <VisiblePokemonImage
             $shouldBeVisible={index === currentSpriteIndex}
             key={spriteUrl}

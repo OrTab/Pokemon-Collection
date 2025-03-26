@@ -10,7 +10,7 @@ import styled from "styled-components";
 const POKEMON_LIST_DEFAULT_HEIGHT = 750;
 export const POKEMON_LIST_COLUMNS = { base: 1, sm: 2, md: 3, lg: 4 };
 const BUFFER_ROWS = 4;
-const OBSERVATION_OFFSET = 10;
+const OBSERVATION_OFFSET = 5;
 
 type PokemonListProps = {
   shouldShowLoading: boolean;
