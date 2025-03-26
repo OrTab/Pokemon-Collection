@@ -6,10 +6,15 @@ import { connectToDatabase } from "./mongodb";
 import { initializeRedis } from "./cache/redis";
 import { CONFIG } from "./config";
 import { runKeepAlive } from "./utils/keepAlive";
+import { requestLogger } from "./middleware/requestLogger";
+import { logger } from "./utils/logger";
 
 const app = express();
 
 const limiter = rateLimit(CONFIG.rateLimit);
+
+// Logger middleware
+app.use(requestLogger);
 
 // CORS configuration
 app.use(cors(CONFIG.cors));
@@ -33,11 +38,12 @@ const startServer = async () => {
     await connectToDatabase();
     await initializeRedis();
     runKeepAlive();
+
     app.listen(CONFIG.port, () => {
-      console.log(`Server running at http://${CONFIG.host}:${CONFIG.port}`);
+      logger.info(`Server running at http://${CONFIG.host}:${CONFIG.port}`);
     });
   } catch (error) {
-    console.error("Failed to start server:", error);
+    logger.error("Failed to start server:", { error });
     process.exit(1);
   }
 };
