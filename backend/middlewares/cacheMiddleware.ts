@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { getCache, setCache } from "../cache/redisUtils";
+import { logger } from "../utils/logger";
 
 type CacheMiddlewareOptions = {
   expiration?: number;
@@ -10,11 +11,11 @@ export const cacheMiddleware =
   ({ expiration, key }: CacheMiddlewareOptions = {}) =>
   async (req: Request, res: Response, next: NextFunction) => {
     const cacheKey = key ? key : req.originalUrl;
-    console.log("cacheKey", cacheKey);
+    logger.info("cacheKey", cacheKey);
     const cachedData = await getCache(cacheKey);
 
     if (cachedData) {
-      console.log("Serving from cache:", cacheKey);
+      logger.info("Serving from cache:", cacheKey);
       res.json(cachedData);
       return;
     }
@@ -23,10 +24,10 @@ export const cacheMiddleware =
     res.json = function (data: any) {
       // Only cache successful responses (status codes 200-299)
       if (res.statusCode >= 200 && res.statusCode < 300) {
-        console.log("Setting cache:", cacheKey);
+        logger.info("Setting cache:", cacheKey);
         setCache({ key: cacheKey, data, expireSeconds: expiration });
       } else {
-        console.log("Not caching error response for:", cacheKey);
+        logger.info("Not caching error response for:", cacheKey);
       }
 
       return originalJson.call(this, data);

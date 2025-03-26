@@ -12,6 +12,7 @@ import {
   getAllSettledValues,
 } from "../utils";
 import Favorite from "../models/Favorite";
+import { logger } from "../utils/logger";
 
 const fetchPokemons = async ({
   offset,
@@ -34,7 +35,7 @@ const fetchPokemons = async ({
     } = await getAllSettledValues(pokemonsResponse);
 
     if (allPokemonsRejected.length > 0) {
-      console.error("Failed to fetch pokemon data:", allPokemonsRejected);
+      logger.error("Failed to fetch pokemon data:", allPokemonsRejected);
     }
 
     const fetchedPokemons = allPokemons.map((pokemon) => pokemon.data);
@@ -62,7 +63,7 @@ const fetchPokemons = async ({
 
     // if there are any rejected values, log the error
     if (rejectedProcessedPokemons.length > 0) {
-      console.error(
+      logger.error(
         "Failed to process pokemon data:",
         rejectedProcessedPokemons
       );

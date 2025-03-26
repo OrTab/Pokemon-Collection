@@ -1,12 +1,13 @@
 import axios from "axios";
 import { CONFIG } from "../config";
+import { logger } from "./logger";
 
 const pingServer = async () => {
   try {
     await axios.get(`${CONFIG.apiUrl}/health`);
-    console.log("Server pinged successfully");
+    logger.info("Server pinged successfully");
   } catch (error) {
-    console.error("Failed to ping server:", error);
+    logger.error("Failed to ping server:", { error });
   }
 };
 

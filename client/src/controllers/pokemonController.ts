@@ -5,39 +5,19 @@ import { FetchPokemonsParams } from "../types/api-types";
 const fetchPokemons = async ({
   page,
 }: FetchPokemonsParams): Promise<Pokemon[]> => {
-  try {
-    return pokemonService.fetchPokemons({ page });
-  } catch (error) {
-    console.error("Error in fetchAllPokemons:", error);
-    throw error;
-  }
+  return pokemonService.fetchPokemons({ page });
 };
 
 const fetchFavorites = async (): Promise<Favorite[]> => {
-  try {
-    return await pokemonService.fetchFavorites();
-  } catch (error) {
-    console.error("Error in fetchFavorites:", error);
-    throw error;
-  }
+  return pokemonService.fetchFavorites();
 };
 
 const addFavorite = async (pokemonId: number) => {
-  try {
-    return await pokemonService.addFavorite(pokemonId);
-  } catch (error) {
-    console.error("Error in addFavorite:", error);
-    throw error;
-  }
+  return pokemonService.addFavorite(pokemonId);
 };
 
 const deleteFavorite = async (pokemonId: number) => {
-  try {
-    return await pokemonService.deleteFavorite(pokemonId);
-  } catch (error) {
-    console.error("Error in deleteFavorite:", error);
-    throw error;
-  }
+  return await pokemonService.deleteFavorite(pokemonId);
 };
 
 export const pokemonController = {

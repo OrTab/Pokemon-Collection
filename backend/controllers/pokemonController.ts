@@ -3,7 +3,7 @@ import { pokemonService } from "../services/pokemonService";
 import { getCache, setCache } from "../cache/redisUtils";
 import { IFavorite } from "../models/Favorite";
 import { CACHE_KEYS } from "../cache/constants";
-
+import { logger } from "../utils/logger";
 const PAGE_LIMIT = 24;
 
 const fetchPokemons = async (req: Request, res: Response) => {
@@ -15,7 +15,7 @@ const fetchPokemons = async (req: Request, res: Response) => {
     });
     res.status(200).json(pokemons);
   } catch (error) {
-    console.error("Error in getPokemons:", error);
+    logger.error("Error in getPokemons:", { error });
     res.status(500).json({ error: "Failed to fetch pokemons" });
   }
 };
@@ -25,7 +25,7 @@ const getFavorites = async (req: Request, res: Response) => {
     const favorites = await pokemonService.getFavorites();
     res.status(200).json(favorites);
   } catch (error) {
-    console.error("Error in getFavoritesPokemons:", error);
+    logger.error("Error in getFavoritesPokemons:", { error });
     res.status(500).json({ error: "Failed to fetch favorites" });
   }
 };
@@ -46,8 +46,10 @@ const addFavorite = async (req: Request, res: Response) => {
     res.status(200).json(favorite);
   } catch (error: any) {
     if (error.code === 11000) {
+      logger.error("Pokemon is already in favorites:", { error });
       res.status(409).json({ error: "Pokemon is already in favorites" });
     } else {
+      logger.error("Failed to add favorite:", { error });
       res.status(500).json({ error: "Failed to add favorite" });
     }
   }
@@ -70,7 +72,7 @@ const deleteFavorite = async (req: Request, res: Response) => {
     }
     res.status(204).send();
   } catch (error) {
-    console.error("Error in deleteFavoritePokemon:", error);
+    logger.error("Error in deleteFavoritePokemon:", { error });
     res.status(500).json({ error: "Failed to delete favorite" });
   }
 };
