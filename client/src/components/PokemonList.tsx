@@ -7,7 +7,7 @@ import { useBreakpointValue } from "@chakra-ui/react";
 import { Pokemon } from "../../../shared/types";
 import styled from "styled-components";
 
-const POKEMON_LIST_DEFAULT_HEIGHT = 690;
+const POKEMON_LIST_DEFAULT_HEIGHT = 750;
 export const POKEMON_LIST_COLUMNS = { base: 1, sm: 2, md: 3, lg: 4 };
 const BUFFER_ROWS = 4;
 const OBSERVATION_OFFSET = 4;
@@ -23,8 +23,8 @@ export const PokemonList = ({ shouldShowLoading }: PokemonListProps) => {
     useBreakpointValue({
       base: 620,
       sm: 620,
-      md: 690,
-      lg: 690,
+      md: 750,
+      lg: 750,
     }) || POKEMON_LIST_DEFAULT_HEIGHT;
 
   const {
