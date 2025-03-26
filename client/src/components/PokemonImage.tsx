@@ -18,9 +18,11 @@ export const PokemonImage = ({ sprites, className }: PokemonImageProps) => {
   }, [sprites]);
 
   useEffect(() => {
-    const intervalId = setInterval(handleSpriteChange, SPRITES_INTERVAL);
-    return () => clearInterval(intervalId);
-  }, [handleSpriteChange]);
+    if (sprites.length) {
+      const intervalId = setInterval(handleSpriteChange, SPRITES_INTERVAL);
+      return () => clearInterval(intervalId);
+    }
+  }, [handleSpriteChange, sprites]);
 
   return (
     <ImagesContainer className={className}>
