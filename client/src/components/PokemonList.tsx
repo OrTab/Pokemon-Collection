@@ -10,7 +10,7 @@ import styled from "styled-components";
 const POKEMON_LIST_DEFAULT_HEIGHT = 690;
 export const POKEMON_LIST_COLUMNS = { base: 1, sm: 2, md: 3, lg: 4 };
 const BUFFER_ROWS = 4;
-const OBSERVATION_OFFSET = 5;
+const OBSERVATION_OFFSET = 4;
 
 type PokemonListProps = {
   shouldShowLoading: boolean;
@@ -56,7 +56,7 @@ export const PokemonList = ({ shouldShowLoading }: PokemonListProps) => {
             {visiblePokemons.map((pokemon, index) => {
               const absoluteIndex = startIndex + index;
               const shouldObserve =
-                pokemons.length - absoluteIndex <= OBSERVATION_OFFSET;
+                pokemons.length - absoluteIndex === OBSERVATION_OFFSET;
 
               return (
                 <PokemonCard
