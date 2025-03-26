@@ -36,7 +36,7 @@ This project is organized into three main directories:
 
 ## Features
 
-- Browse through the first 150 Pokémon with pagination
+- Browse through Pokémons with infinite scroll pagination
 - View detailed information for each Pokémon (abilities, types, evolutions)
 - Add and remove Pokémon from your favorites collection
 - Filter to view only favorited Pokémon
