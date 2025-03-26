@@ -42,11 +42,7 @@ export const addFavorite = createAsyncThunk(
   async (pokemonId: number, { dispatch }) => {
     dispatch(addFavoriteOptimistic(pokemonId));
     try {
-      const response = await pokemonController.addFavorite(pokemonId);
-      dispatch(
-        addMessage({ text: "Pokemon added to favorites", type: "success" })
-      );
-      return response;
+      return await pokemonController.addFavorite(pokemonId);
     } catch (error) {
       dispatch(removeFavoriteOptimistic(pokemonId));
       dispatch(
@@ -65,14 +61,9 @@ export const deleteFavorite = createAsyncThunk(
   async (pokemonId: number, { dispatch, getState }) => {
     const state = getState() as RootState;
     const currentFavorite = state.pokemon.favorites[pokemonId];
-
     dispatch(removeFavoriteOptimistic(pokemonId));
     try {
-      const response = await pokemonController.deleteFavorite(pokemonId);
-      dispatch(
-        addMessage({ text: "Pokemon removed from favorites", type: "success" })
-      );
-      return response;
+      return await pokemonController.deleteFavorite(pokemonId);
     } catch (error) {
       if (currentFavorite) {
         dispatch(restoreFavoriteOptimistic(currentFavorite));
