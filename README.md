@@ -179,16 +179,17 @@ This application is deployed using:
 
 ## Development Approach
 
-### State Management
-
-- Redux Toolkit is used to manage application state
-- API calls are centralized in slice files with proper loading/error states
-
 ### Performance Optimizations
 
 - Redis caching for frequently accessed data
 - Pagination to limit data transfer
 - Chakra UI with optimized rendering
+- Virtualized grid rendering to display only items within the viewport, improving performance with large datasets
+
+### State Management
+
+- Redux Toolkit is used to manage application state
+- API calls are centralized in slice files with proper loading/error states
 
 ### Responsive Design
 
