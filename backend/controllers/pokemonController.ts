@@ -38,11 +38,10 @@ const addFavorite = async (req: Request, res: Response) => {
   }
   try {
     const favorite = await pokemonService.addFavorite(pokemonId);
-    const cachedFavorites = await getCache<IFavorite[]>(CACHE_KEYS.FAVORITES);
-    if (cachedFavorites) {
-      cachedFavorites.push(favorite);
-      setCache({ key: CACHE_KEYS.FAVORITES, data: cachedFavorites });
-    }
+    const cachedFavorites =
+      (await getCache<IFavorite[]>(CACHE_KEYS.FAVORITES)) || [];
+    cachedFavorites.push(favorite);
+    setCache({ key: CACHE_KEYS.FAVORITES, data: cachedFavorites });
     res.status(200).json(favorite);
   } catch (error: any) {
     if (error.code === 11000) {
@@ -63,13 +62,12 @@ const deleteFavorite = async (req: Request, res: Response) => {
   }
   try {
     await pokemonService.deleteFavorite(parseInt(pokemonId));
-    const cachedFavorites = await getCache<IFavorite[]>(CACHE_KEYS.FAVORITES);
-    if (cachedFavorites) {
-      const filteredFavorites = cachedFavorites.filter(
-        (favorite) => favorite.pokemonId !== parseInt(pokemonId)
-      );
-      setCache({ key: CACHE_KEYS.FAVORITES, data: filteredFavorites });
-    }
+    const cachedFavorites =
+      (await getCache<IFavorite[]>(CACHE_KEYS.FAVORITES)) || [];
+    const filteredFavorites = cachedFavorites.filter(
+      (favorite) => favorite.pokemonId !== parseInt(pokemonId)
+    );
+    setCache({ key: CACHE_KEYS.FAVORITES, data: filteredFavorites });
     res.status(204).send();
   } catch (error) {
     logger.error("Error in deleteFavoritePokemon:", { error });
