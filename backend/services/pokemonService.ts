@@ -5,12 +5,12 @@ import {
   PokemonType,
   FetchedPokemon,
   PokemonSpecies,
-} from "../types/types";
+} from "../types/pokemon/types";
 import {
   checkIsImageUrl,
   extractEvolutionNames,
   getAllSettledValues,
-} from "../utils";
+} from "../utils/utils";
 import Favorite from "../models/Favorite";
 import { logger } from "../utils/logger";
 

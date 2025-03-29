@@ -5,9 +5,10 @@ import router from "./routes";
 import { connectToDatabase } from "./mongodb";
 import { initializeRedis } from "./cache/redis";
 import { CONFIG } from "./config";
-import { runKeepAlive } from "./utils/keepAlive";
-import { requestLogger } from "./middleware/requestLogger";
+import { requestLogger } from "./middlewares/requestLogger";
 import { logger } from "./utils/logger";
+import { setupProcessHandlers } from "./utils/processHandlers";
+import { setupIntervals } from "./utils/intervals";
 
 const app = express();
 
@@ -37,7 +38,8 @@ const startServer = async () => {
   try {
     await connectToDatabase();
     await initializeRedis();
-    runKeepAlive();
+    setupIntervals();
+    setupProcessHandlers();
 
     app.listen(CONFIG.port, () => {
       logger.info(`Server running at http://${CONFIG.host}:${CONFIG.port}`);

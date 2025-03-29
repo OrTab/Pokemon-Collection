@@ -1,4 +1,4 @@
-import { EvolutionChain } from "./types/types";
+import { EvolutionChain } from "../types/pokemon/types";
 
 export const extractEvolutionNames = (
   chain: EvolutionChain,
